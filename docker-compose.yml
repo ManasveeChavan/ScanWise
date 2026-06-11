@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  # Builds the debug APK. Output is written to ./app/build via the bind mount.
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspace
+      - gradle-cache:/root/.gradle
+    command: ["./gradlew", "assembleDebug", "--no-daemon"]
+
+  # Headless Android emulator with noVNC (browser) access and ADB exposed.
+  # Web UI: http://localhost:6080  (view/control the emulator)
+  # ADB:    localhost:5555
+  emulator:
+    image: budtmo/docker-android:emulator_11.0
+    privileged: true
+    ports:
+      - "6080:6080"
+      - "5554:5554"
+      - "5555:5555"
+    environment:
+      - EMULATOR_DEVICE=Pixel 6
+      - WEB_VNC=true
+    volumes:
+      - ./app/build/outputs/apk:/apks
+
+volumes:
+  gradle-cache:

@@ -74,13 +74,13 @@ class UrlAnalyzer(
 
         val subdomainCount = domain.count { it == '.' }
         if (subdomainCount >= 3) {
-            risk += 15
+            risk += 20
             findings += Finding("Excessive subdomains", "Domain has $subdomainCount levels, often used to obscure the real domain", false)
         }
 
         val suspiciousChars = Regex("[@%]").containsMatchIn(url) || url.count { it == '-' } > 3
         if (suspiciousChars) {
-            risk += 15
+            risk += 20
             findings += Finding("Suspicious characters", "URL contains characters often used to mask the real destination", false)
         } else {
             findings += Finding("Character check", "No suspicious characters detected in the URL", true)
@@ -95,7 +95,7 @@ class UrlAnalyzer(
         val tld = domain.substringAfterLast('.', "")
         val suspiciousTlds = setOf("zip", "review", "country", "kim", "cricket", "science", "work", "party", "gq", "tk", "ml")
         if (tld.lowercase() in suspiciousTlds) {
-            risk += 15
+            risk += 20
             findings += Finding("TLD reputation", ".$tld is a top-level domain frequently abused for scams", false)
         } else if (tld.isNotEmpty()) {
             findings += Finding("TLD reputation", ".$tld is a commonly trusted top-level domain", true)
@@ -106,7 +106,7 @@ class UrlAnalyzer(
             domain.contains(brand, ignoreCase = true) && !domain.endsWith("$brand.com", ignoreCase = true)
         }
         if (brandLookalike) {
-            risk += 25
+            risk += 35
             findings += Finding("Brand impersonation", "Domain references a known brand but doesn't match its official domain", false)
         }
 
@@ -131,7 +131,7 @@ class UrlAnalyzer(
         val hits = maliciousKeywords.filter { lower.contains(it) }
         return if (hits.isNotEmpty()) {
             findings += Finding("Phishing keywords", "Found suspicious terms in URL: ${hits.joinToString(", ")}", false)
-            (hits.size * 25).coerceAtMost(100) to findings
+            (hits.size * 35).coerceAtMost(100) to findings
         } else {
             findings += Finding("Keyword scan", "No known phishing keywords detected in the URL", true)
             0 to findings

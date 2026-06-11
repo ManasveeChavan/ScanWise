@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ScanWise</string>
+    <string name="scanner_hint">Hold camera over QR code</string>
+    <string name="permission_rationale">ScanWise needs camera access to scan QR codes</string>
+</resources>

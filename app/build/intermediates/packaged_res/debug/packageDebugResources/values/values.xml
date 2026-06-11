@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ScanWise</string>
+    <string name="permission_rationale">ScanWise needs camera access to scan QR codes</string>
+    <string name="scanner_hint">Hold camera over QR code</string>
+    <style name="Theme.ScanWise" parent="android:Theme.Material.Light.NoActionBar"/>
+</resources>
